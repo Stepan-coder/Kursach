@@ -1,0 +1,10 @@
+*.pt
+*.db
+*.pdf
+*.xlsx
+*.docx
+*.png
+*.jpg
+Library/
+.idea/
+__pycache__/
