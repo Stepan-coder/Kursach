@@ -121,7 +121,7 @@ def markup_PDF(path: str, models: Models) -> Dict[int, Any]:
 @eel.expose
 def login(email, password):
     if db.get_table("users").get_from_cell(key=str(0), column_name="email") != email and \
-       password != db.get_table("users").get_from_cell(key=str(0), column_name="email"):
+       password != db.get_table("users").get_from_cell(key=str(0), column_name="password"):
         quit()
     files = []
     data = []
@@ -129,8 +129,8 @@ def login(email, password):
     for i in range(len(js)):
         files.append({'type': js[str(i)]['type'], 'name': js[str(i)]['name']})
         data.append(js[str(i)]['data'])
-    print(files)
-    print(data)
+    # print(files)
+    # print(data)
     global count
     count = len(files)
     # files = [{'type': 'docx', 'name': 'efef.ef'}]
@@ -163,6 +163,7 @@ def pythonFunction(wildcard="*"):
     elif file_type == 'pdf':
         data = build_str_markup(json_markup=markup_PDF(path=path, models=models))
     global count
+    print(data)
     files = json.loads(db.get_table("users").get_from_cell(key=str(0), column_name="files"))
     files[str(count)] = {"type": file_type, "name": basename, "data": data}
     db.get_table("users").set_to_cell(key=str(0), column_name="files", new_value=json.dumps(files))
@@ -171,6 +172,7 @@ def pythonFunction(wildcard="*"):
     return {'preview': FilePreview.render(file={'type': file_type, 'name': basename, 'len': count}),
             'file': {'type': file_type, 'html': LeftBarFile.render(file={'type': file_type, 'name': basename})},
             'get_data': FileData.render(file={'data': data, 'len': count})}
+
 
 db = DataBase(path=os.path.join(os.getcwd(), "database"), filename="DigiDoc.db")
 db.create_table(name="users",
@@ -181,6 +183,6 @@ db.create_table(name="users",
                 primary_key="id")
 models = Models(hand_model_path="models/checkpoint_epoch_8.pt",
                 signature_model_path="models/model.pt",
-                is_bert=False)
+                is_bert=True)
 eel.start('templates/index.html', jinja_templates='templates', port=8000)
 

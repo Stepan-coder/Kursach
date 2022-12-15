@@ -9,6 +9,8 @@ from typing import List, Dict, Any
 from deeppavlov import configs, build_model
 from natasha import NamesExtractor, AddrExtractor, DatesExtractor, MoneyExtractor, MorphVocab
 
+# pip install git+https://github.com/Koziev/rutokenizer
+
 
 class TextMarkUp:
     """
@@ -27,11 +29,12 @@ class TextMarkUp:
 
     def __init__(self, is_bert: bool, download: bool = False) -> None:
         """
-        This method inits the work of this class
-        :return None
+        This method init the work of this class
         """
         if is_bert:
-            self.__config_path = configs.ner.ner_rus_bert
+            # self.__config_path = configs.ner.ner_rus_bert
+            # self.__config_path = configs.ner.ner_ontonotes_bert_mult
+            self.__config_path = configs.ner.ner_ontonotes_bert_mult
             self.__ner = build_model(self.__config_path, download=download)
         self.__is_bert = is_bert
         self.__morph_vocab = MorphVocab()
@@ -55,15 +58,15 @@ class TextMarkUp:
                 text_markup += self.rebuild_markup(self.get_bert_markup(input_text=sector))
         else:
             text_markup = [{text: {}}]
-        text_markup = self.rebuild_markup(self.get_inn_markup(text_markup=text_markup))
-        text_markup = self.rebuild_markup(self.get_kpp_markup(text_markup=text_markup))
-        text_markup = self.rebuild_markup(self.get_bic_markup(text_markup=text_markup))
-        text_markup = self.rebuild_markup(self.get_phone_markup(text_markup=text_markup))
-        text_markup = self.rebuild_markup(self.get_snils_markup(text_markup=text_markup))
-        text_markup = self.rebuild_markup(self.get_emails_markup(text_markup=text_markup))
-        text_markup = self.rebuild_markup(self.get_urls_markup(text_markup=text_markup))
-        text_markup = self.rebuild_markup(self.get_date_markup(text_markup=text_markup))
-        text_markup = self.rebuild_markup(self.get_money_markup(text_markup=text_markup))
+        # text_markup = self.rebuild_markup(self.get_inn_markup(text_markup=text_markup))
+        # text_markup = self.rebuild_markup(self.get_kpp_markup(text_markup=text_markup))
+        # text_markup = self.rebuild_markup(self.get_bic_markup(text_markup=text_markup))
+        # text_markup = self.rebuild_markup(self.get_phone_markup(text_markup=text_markup))
+        # text_markup = self.rebuild_markup(self.get_snils_markup(text_markup=text_markup))
+        # text_markup = self.rebuild_markup(self.get_emails_markup(text_markup=text_markup))
+        # text_markup = self.rebuild_markup(self.get_urls_markup(text_markup=text_markup))
+        # text_markup = self.rebuild_markup(self.get_date_markup(text_markup=text_markup))
+        # text_markup = self.rebuild_markup(self.get_money_markup(text_markup=text_markup))
         return text_markup
 
     def get_bert_markup(self, input_text: str) -> List[Dict[str, Dict[str, str]]]:
@@ -578,3 +581,7 @@ class TextMarkUp:
                 pass
         sectors.append(this_text)
         return sectors
+
+
+# markup = TextMarkUp(is_bert=True, download=True)
+# print(markup.get_markup(text="Бородин Степан Успешно выступил на конференции 'RCGJ-2022'"))

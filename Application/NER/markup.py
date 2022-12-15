@@ -29,7 +29,16 @@ class MarkUp:
         self.__type = self.__get_type()
         self.__value = self.__item[list(self.__item.keys())[0]]
 
-    def get_text(self) -> str:
+    @property
+    def is_empty(self) -> bool:
+        return self.__is_empty
+
+    @property
+    def type(self) -> MarkUpType:
+        return self.__type
+
+    @property
+    def text(self) -> str:
         return self.__text
 
     def get_param_value(self, param: str) -> str:
@@ -61,13 +70,7 @@ class MarkUp:
         else:
             raise Exception(f"Param {param} does not exist in type {self.__type}")
 
-    def is_empty(self) -> bool:
-        return self.__is_empty
-
-    def get_type(self) -> MarkUpType:
-        return self.__type
-
-    def json(self) -> Dict[str, Dict[str, str]]:
+    def get_json(self) -> Dict[str, Dict[str, str]]:
         return self.__item
 
     def __get_type(self) -> MarkUpType:

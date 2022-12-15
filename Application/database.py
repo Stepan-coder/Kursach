@@ -49,7 +49,6 @@ class Table:
         self.__table_labels = labels
         self.__is_loaded = True
 
-
     def get_column_names(self) -> List[str]:
         """
         Этот метод возвращает список, названий колонок
